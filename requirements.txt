@@ -3,3 +3,4 @@ fastApi
 pymongo[srv]
 Authlib
 flask
+gunicorn
