@@ -4,5 +4,4 @@ pymongo[srv]
 Authlib
 flask
 gunicorn
-os
 requests
