@@ -1,0 +1,5 @@
+uvicorn
+fastApi
+pymongo[srv]
+Authlib
+flask
