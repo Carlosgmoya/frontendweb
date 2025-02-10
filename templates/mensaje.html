@@ -17,12 +17,21 @@
 
         <h2>Detalles del Mensaje</h2>
         
-        <h3>Cabecera</h3>
+        <h3>Cuerpo</h3>
         <p><strong>Contenido:</strong> {{ mensaje['cabecera']['contenido'] }}</p>
-        <p><strong>Adjunto:</strong> {{ mensaje['cabecera']['adjunto'] }}</p>
+
+        <!-- Si el campo 'adjunto' contiene una URL, mostrar la imagen -->
+        <p><strong>Adjunto:</strong> 
+            {% if mensaje['cabecera']['adjunto'] %}
+                <img src="{{ mensaje['cabecera']['adjunto'] }}" alt="Imagen adjunta" style="max-width: 500px; max-height: 300px;">
+            {% else %}
+                No hay imagen adjunta.
+            {% endif %}
+        </p>
+
         <p><strong>Token:</strong> {{ mensaje['cabecera']['token'] }}</p>
         
-        <h3>Cuerpo</h3>
+        <h3>Cabecera</h3>
         <p><strong>De:</strong> {{ mensaje['cuerpo']['de'] }}</p>
         <p><strong>Para:</strong> {{ mensaje['cuerpo']['para'] }}</p>
         <p><strong>Asunto:</strong> {{ mensaje['cuerpo']['asunto'] }}</p>
