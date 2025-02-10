@@ -11,18 +11,31 @@
         <a href="{{ url_for('logout') }}">
             <button>Logout</button>
         </a>
-        <a href="{{url_for('crearPelicula')}}">
-            <button>Crear pelicula</button>
+        <a href="{{ url_for('crear') }}">
+            <button>Crear correo</button>
         </a>
-        <a href="{{url_for('crearSala')}}">
-            <button>Crear Sala</button>
-        </a>
-        <a href="{{url_for('crearProy')}}">
-            <button>Crear Proyeccion</button>
-        </a>
-        <a href="{{url_for('buscarPelicula')}}">
-            <button>Buscar pelicula</button>
-        </a>
+        
+        <!-- Mostrar la lista de cabeceras -->
+        <h2>Cabeceras del autor ({{ user.email }})</h2>
+        {% if cabeceras %}
+            <ul>
+                {% for cabecera in cabeceras %}
+                    <li>
+                        <!-- Botón que redirige a la vista de detalle del mensaje con el ID de la cabecera -->
+                        <a href="{{ url_for('mensaje', id=cabecera._id['$oid']) }}">
+                            <button>Mensaje</button>
+                        </a>
+                        <strong>De:</strong> {{ cabecera.de }} <br>
+                        <strong>Para:</strong> {{ cabecera.para }} <br>
+                        <strong>Asunto:</strong> {{ cabecera.asunto }} <br>
+                        <strong>Fecha:</strong> {{ cabecera.stamp['$date'] }} <br>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay cabeceras disponibles para este autor.</p>
+        {% endif %}
+        
     {% else %}
         <h1>Bienvenido</h1>
         <a href="{{ url_for('login') }}">

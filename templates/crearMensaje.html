@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Mensaje</title>
+</head>
+<body>
+    <h1>Crear Mensaje</h1>
+    <a href="{{ url_for('index') }}">
+        <button>Volver</button>
+    </a>
+
+    <!-- Formulario para crear un mensaje -->
+    <form id="mensajeForm" enctype="multipart/form-data">
+        <div>
+            <label for="de">De:</label>
+            <input type="email" id="de" name="de" required />
+        </div>
+        <div>
+            <label for="para">Para:</label>
+            <input type="email" id="para" name="para" required />
+        </div>
+        <div>
+            <label for="asunto">Asunto:</label>
+            <input type="text" id="asunto" name="asunto" required />
+        </div>
+        <div>
+            <label for="contenido">Contenido:</label>
+            <textarea id="contenido" name="contenido" required></textarea>
+        </div>
+        <div>
+            <label for="imagen">Imagen (opcional):</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*" />
+        </div>
+        <div>
+            <button type="submit">Enviar Mensaje</button>
+        </div>
+    </form>
+
+    <!-- Mensaje de confirmación o error -->
+    <div id="responseMessage"></div>
+
+    <script>
+        // Captura el formulario y envía los datos usando fetch
+        document.getElementById('mensajeForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Evita el comportamiento por defecto del formulario
+
+            // Obtén los valores del formulario
+            const de = document.getElementById('de').value;
+            const para = document.getElementById('para').value;
+            const asunto = document.getElementById('asunto').value;
+            const contenido = document.getElementById('contenido').value;
+            const imagen = document.getElementById('imagen').files[0];  // Captura el archivo de imagen
+
+            // Prepara los datos a enviar como FormData
+            const formData = new FormData();
+            formData.append('de', de);
+            formData.append('para', para);
+            formData.append('asunto', asunto);
+            formData.append('contenido', contenido);
+
+            if (imagen) {
+                formData.append('imagen', imagen);  // Si hay una imagen, la agregamos al FormData
+            }
+
+            try {
+                // Realiza la solicitud POST a tu API externa
+                const response = await fetch('https://backendweb-b0ti.onrender.com/parcial/mensaje', {
+                    method: 'POST',
+                    body: formData // Aquí enviamos los datos como FormData
+                });
+
+                // Manejo de la respuesta
+                if (response.ok) {
+                    // Si la respuesta es correcta, muestra un mensaje de éxito
+                    const result = await response.json();
+                    document.getElementById('responseMessage').innerText = 'Mensaje enviado correctamente.';
+                } else {
+                    // Si la respuesta no es correcta, muestra un mensaje de error
+                    const error = await response.json();
+                    document.getElementById('responseMessage').innerText = 'Error al enviar el mensaje: ' + error.detail;
+                }
+            } catch (error) {
+                // Si ocurre un error en la solicitud fetch, muestra un mensaje de error
+                document.getElementById('responseMessage').innerText = 'Hubo un error al enviar el mensaje.';
+            }
+        });
+    </script>
+</body>
+</html>
